@@ -12,18 +12,22 @@ export const fetchYahooMarketData = async (
   try {
     const yahooSymbol = `${symbol}.NS`;
 
-    const result = await yahooFinance.quoteSummary(yahooSymbol, {
-      modules: ["price", "summaryDetail", "earnings"],
-    });
+    // ✅ FIX: Explicit type to avoid `never`
+    const result: any = await yahooFinance.quoteSummary(
+      yahooSymbol,
+      {
+        modules: ["price", "summaryDetail", "earnings"],
+      }
+    );
 
     const cmp =
-      result.price?.regularMarketPrice ?? null;
+      result?.price?.regularMarketPrice ?? null;
 
     const peRatio =
-      result.summaryDetail?.trailingPE ?? null;
+      result?.summaryDetail?.trailingPE ?? null;
 
     const latestEarnings =
-      result.earnings?.earningsChart?.quarterly?.[0]
+      result?.earnings?.earningsChart?.quarterly?.[0]
         ?.actual ?? null;
 
     return {
